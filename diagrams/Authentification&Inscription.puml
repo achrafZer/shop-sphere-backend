@@ -1,5 +1,6 @@
 @startuml
 
+title Création de compte et inscription d'un client
 
 skinparam BoxPadding 10
 skinparam sequenceArrowThickness 1.5
@@ -7,7 +8,7 @@ skinparam roundcorner 15
 skinparam NoteBackgroundColor palegreen
 skinparam NoteBorderColor black
 
-participant "Client" as U
+actor "Client" as U
 note over U: L'utilisateur décide de se connecter \navec des faux éléments
 
 box "Shop Sphere" #LightGrey
