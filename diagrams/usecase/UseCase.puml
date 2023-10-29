@@ -1,0 +1,81 @@
+@startuml
+
+left to right direction
+
+actor Utilisateur <<Secondary>> as User
+actor Client <<Primary>> as Customer
+actor Administrateur <<Secondary>> as Admin
+actor Banque <<Secondary>> as Bank
+
+User <|-- Customer
+
+rectangle "Site de vente Shop Sphere" {
+    package Utilisateur {
+        usecase "S'inscrire" as UC1
+        usecase "Consulter un article" as UC2
+        usecase "Prospecter" as UC3
+    }
+    usecase "Parcourir les articles" as UC4
+    package Client {
+        usecase "Se connecter" as UC5
+        usecase "Se déconnecter" as UC6
+        usecase "Modifier ses informations personnelles" as UC7
+        usecase "Gérer ses commandes" as UC8
+        usecase "Gérer son panier" as UC9
+    }
+    usecase "Suivre ses commandes" as UC10
+    usecase "Annuler une commande" as UC11
+    usecase "Ajouter un article au panier" as UC12
+    usecase "Supprimer un article du panier" as UC13
+    usecase "Commander" as UC14
+    usecase "Vérifier le stock" as UC15
+    usecase "Payer par CB" as UC16
+    package Administrateur {
+        usecase "S'authentifier" as UC17
+        usecase "Se déconnecter" as UC18
+        usecase "Parcourir la liste des articles" as UC19
+        usecase "Gérer le stock" as UC20
+    }
+    usecase "Ajouter un article" as UC21
+    usecase "Modifier un article" as UC22
+    usecase "Supprimer un article" as UC23
+}
+
+UC12 ...> UC3: <<extend>>
+note on link: Condition: si le client est connecté
+UC4 ...> UC3: <<extend>>
+UC7 ...> UC5: <<include>>
+UC8 ...> UC5: <<include>>
+UC9 ..> UC5: <<include>>
+UC10 ...> UC8: <<extend>>
+UC11 ...> UC8: <<extend>>
+note on link: Condition: s'il existe au moins une commande
+UC12 ...> UC9: <<extend>>
+UC12 ...> UC15: <<include>>
+UC13 ...> UC9: <<extend>>
+note on link: Condition: s'il existe au moins un article \n dans le panier
+UC14 ...> UC9: <<extend>>
+note on link: Condition: s'il existe au moins un article \n dans le panier
+UC14 ...> UC16: <<include>>
+UC21 ...> UC20: <<extend>>
+UC22 ...> UC20: <<extend>>
+UC23 ...> UC20: <<extend>>
+
+User --> UC1
+User --> UC2
+User --> UC3
+
+Customer -> UC5
+Customer -> UC6
+Customer -> UC7
+Customer -> UC8
+Customer -> UC9
+
+Admin -> UC14
+Admin -> UC17
+Admin -> UC18
+Admin -> UC19
+Admin -> UC20
+
+Bank --> UC16
+@enduml
