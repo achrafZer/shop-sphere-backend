@@ -1,4 +1,15 @@
 package com.shop.sphere.dao;
 
-public class OrderRepository {
+import com.shop.sphere.models.Order;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+/**
+ * Repository interface for managing {@link Order} entities.
+ * <p>
+ * Provides CRUD operations on Order entities.
+ * </p>
+ */
+@Repository
+public interface OrderRepository extends CrudRepository<Order, Long> {
 }
