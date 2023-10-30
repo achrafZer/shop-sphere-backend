@@ -1,2 +1,4 @@
-package com.shop.sphere.dao;public class ProductRepository {
+package com.shop.sphere.dao;
+
+public class ProductRepository {
 }
