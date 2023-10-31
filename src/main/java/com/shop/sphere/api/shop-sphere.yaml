@@ -6,6 +6,26 @@ info:
 servers:
   - url: "http://localhost:8080/api"
 paths:
+  "/login":
+    post:
+      tags:
+        - login
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginDTO"
+      responses:
+        "201":
+          description: "Connected"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserConnectedDTO"
+        "400":
+          description: "Bad request"
+
   "/buyers":
     get:
       tags:
@@ -279,29 +299,22 @@ paths:
 components:
   schemas:
     BuyerDTO:
+      allOf:
+        - $ref: "#/components/schemas/AdminDTO"
+      type: object
+      required:
+        - address
+      properties:
+        address:
+          type: string
+
+    AdminDTO:
       type: object
       required:
         - firstName
         - lastName
         - email
         - password
-        - address
-      properties:
-        id:
-          type: integer
-        firstName:
-          type: string
-        lastName:
-          type: string
-        email:
-          type: string
-        password:
-          type: string
-        address:
-          type: string
-
-    AdminDTO:
-      type: object
       properties:
         id:
           type: integer
@@ -356,4 +369,23 @@ components:
           type: boolean
         client:
           $ref: "#/components/schemas/BuyerDTO"
+
+    LoginDTO:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+
+    UserConnectedDTO:
+      allOf:
+        - $ref: "#/components/schemas/AdminDTO"
+      type: object
+      properties:
+        address:
+          type: string
 
