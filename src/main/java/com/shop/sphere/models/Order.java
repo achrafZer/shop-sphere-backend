@@ -15,6 +15,7 @@ import java.util.List;
  */
 @Data
 @Entity
+@Table(name = "order_table")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order {
