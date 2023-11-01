@@ -15,7 +15,7 @@ cache:
 build:
   stage: build
   script:
-    - mvn $MAVEN_CLI_OPTS clean compile install -DskipTests
+    - mvn $MAVEN_CLI_OPTS clean compile install -DskipTests -e -X
     
 
 test:
