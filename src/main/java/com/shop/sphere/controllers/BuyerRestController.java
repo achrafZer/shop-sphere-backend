@@ -16,7 +16,7 @@ public class BuyerRestController implements BuyersApi {
     }
 
     @Override
-    public ResponseEntity<BuyerDTO> getBuyer(Integer idBuyer) {
+    public ResponseEntity<BuyerDTO> getBuyer(Long idBuyer) {
         return BuyersApi.super.getBuyer(idBuyer);
     }
 

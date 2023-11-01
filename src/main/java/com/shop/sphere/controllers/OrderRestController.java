@@ -2,6 +2,7 @@ package com.shop.sphere.controllers;
 
 import com.shop.sphere.api.OrdersApi;
 import com.shop.sphere.api.model.IdBuyer;
+import com.shop.sphere.api.model.IdOrder;
 import com.shop.sphere.api.model.OrderDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,17 +13,17 @@ import java.util.List;
 public class OrderRestController implements OrdersApi {
 
     @Override
-    public ResponseEntity<IdBuyer> createOrder(OrderDTO orderDTO) {
+    public ResponseEntity<IdOrder> createOrder(OrderDTO orderDTO) {
         return OrdersApi.super.createOrder(orderDTO);
     }
 
     @Override
-    public ResponseEntity<Void> deleteOrder(Integer idOrder) {
+    public ResponseEntity<Void> deleteOrder(Long idOrder) {
         return OrdersApi.super.deleteOrder(idOrder);
     }
 
     @Override
-    public ResponseEntity<OrderDTO> getOrder(Integer idOrder) {
+    public ResponseEntity<OrderDTO> getOrder(Long idOrder) {
         return OrdersApi.super.getOrder(idOrder);
     }
 
