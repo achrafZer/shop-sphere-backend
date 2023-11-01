@@ -1,0 +1,359 @@
+openapi: 3.0.1
+info:
+  title: API ShopSphere
+  description: Web services for the ShopSphere store resources
+  version: 1.0.0
+servers:
+  - url: "http://localhost:8080/api"
+paths:
+  "/buyers":
+    get:
+      tags:
+        - buyers
+      summary: "Find all buyers"
+      operationId: getBuyers
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BuyerDTO"
+        "204":
+          description: "No buyer found"
+        "400":
+          description: "Bad request"
+    post:
+      tags:
+        - buyers
+      summary: "Create a new buyer"
+      operationId: createBuyer
+      requestBody:
+        description: "The new buyer to create"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BuyerDTO"
+      responses:
+        "201":
+          description: "Buyer created"
+          content:
+            application/json:
+              schema:
+                title: "idBuyer"
+                type: object
+                properties:
+                  idBuyer:
+                    type: integer
+        "400":
+          description: "Bad request"
+    put:
+      tags:
+        - buyers
+      summary: "Update a buyer"
+      operationId: updateBuyer
+      requestBody:
+        description: "The new information to update on the buyer"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BuyerDTO"
+      responses:
+        "204":
+          description: "Buyer updated"
+        "400":
+          description: "Bad request"
+  "/buyers/{idBuyer}":
+    get:
+      tags:
+        - buyers
+      summary: "Find a buyer by id"
+      operationId: getBuyer
+      parameters:
+        - name: idBuyer
+          in: path
+          description: "The id of the buyer to find"
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BuyerDTO"
+        "204":
+          description: "No buyer found"
+        "400":
+          description: "Bad request"
+
+  "/admins/{idAdmin}":
+    get:
+      tags:
+        - admins
+      summary: "Find an admin by id"
+      operationId: getAdmin
+      parameters:
+        - name: idAdmin
+          in: path
+          description: "The id of the admin to find"
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminDTO"
+        "204":
+          description: "No Admin found"
+        "400":
+          description: "Bad request"
+
+  "/products":
+    get:
+      tags:
+        - products
+      summary: "Find all products"
+      operationId: getProducts
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProductDTO"
+        "204":
+          description: "No product found"
+        "400":
+          description: "Bad request"
+    put:
+      tags:
+        - products
+      summary: "Update a product"
+      operationId: updateProduct
+      requestBody:
+        description: "The new information to update on the product"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductDTO"
+      responses:
+        "204":
+          description: "Product updated"
+        "400":
+          description: "Bad request"
+  "/products/{idProduct}":
+    get:
+      tags:
+        - products
+      summary: "Find a product by id"
+      operationId: getProduct
+      parameters:
+        - name: idProduct
+          in: path
+          description: "The id of the product to find"
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductDTO"
+        "204":
+          description: "No product found"
+        "400":
+          description: "Bad request"
+
+  "/orders":
+    get:
+      tags:
+        - orders
+      summary: "Find all orders"
+      operationId: getOrders
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OrderDTO"
+        "204":
+          description: "No order found"
+        "400":
+          description: "Bad request"
+    post:
+      tags:
+        - orders
+      summary: "Create a new order"
+      operationId: createOrder
+      requestBody:
+        description: "The new order to create"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderDTO"
+      responses:
+        "201":
+          description: "Order created"
+          content:
+            application/json:
+              schema:
+                title: "idOrder"
+                type: object
+                properties:
+                  idBuyer:
+                    type: integer
+        "400":
+          description: "Bad request"
+    put:
+      tags:
+        - orders
+      summary: "Update an order"
+      operationId: updateOrder
+      requestBody:
+        description: "The new information to update on the order"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderDTO"
+      responses:
+        "204":
+          description: "Order updated"
+        "400":
+          description: "Bad request"
+  "/orders/{idOrder}":
+    get:
+      tags:
+        - orders
+      summary: "Find an order by id"
+      operationId: getOrder
+      parameters:
+        - name: idOrder
+          in: path
+          description: "The id of the order to find"
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderDTO"
+        "204":
+          description: "No order found"
+        "400":
+          description: "Bad request"
+    delete:
+      tags:
+        - orders
+      summary: "Delete an order"
+      operationId: deleteOrder
+      parameters:
+        - name: idOrder
+          in: path
+          description: "The id of the order to delete"
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: "Order deleted"
+        "400":
+          description: "Bad request"
+
+components:
+  schemas:
+    BuyerDTO:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - email
+        - password
+        - address
+      properties:
+        id:
+          type: integer
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        address:
+          type: string
+
+    AdminDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+
+    ProductDTO:
+      type: object
+      required:
+        - photo
+        - title
+        - price
+        - quantity
+        - description
+      properties:
+        id:
+          type: integer
+        photo:
+          type: string
+        title:
+          type: string
+        price:
+          type: integer
+        quantity:
+          type: number
+        description:
+          type: string
+
+    OrderDTO:
+      type: object
+      required:
+        - articles
+        - date
+        - isFinalized
+        - client
+      properties:
+        id:
+          type: integer
+        articles:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductDTO"
+        date:
+          type: object
+        isFinalized:
+          type: boolean
+        client:
+          $ref: "#/components/schemas/BuyerDTO"
+
