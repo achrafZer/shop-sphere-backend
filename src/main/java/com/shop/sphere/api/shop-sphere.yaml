@@ -4,9 +4,9 @@ info:
   description: Web services for the ShopSphere store resources
   version: 1.0.0
 servers:
-  - url: "http://localhost:8080/api"
+  - url: "http://localhost:8080"
 paths:
-  "/login":
+  "/api/login":
     post:
       tags:
         - login
@@ -26,7 +26,7 @@ paths:
         "400":
           description: "Bad request"
 
-  "/buyers":
+  "/api/buyers":
     get:
       tags:
         - buyers
@@ -67,6 +67,7 @@ paths:
                 properties:
                   idBuyer:
                     type: integer
+                    format: int64
         "400":
           description: "Bad request"
     put:
@@ -85,7 +86,7 @@ paths:
           description: "Buyer updated"
         "400":
           description: "Bad request"
-  "/buyers/{idBuyer}":
+  "/api/buyers/{idBuyer}":
     get:
       tags:
         - buyers
@@ -98,6 +99,7 @@ paths:
           required: true
           schema:
             type: integer
+            format: int64
       responses:
         "200":
           description: "OK"
@@ -110,7 +112,7 @@ paths:
         "400":
           description: "Bad request"
 
-  "/admins/{idAdmin}":
+  "/api/admins/{idAdmin}":
     get:
       tags:
         - admins
@@ -123,6 +125,7 @@ paths:
           required: true
           schema:
             type: integer
+            format: int64
       responses:
         "200":
           description: "OK"
@@ -135,7 +138,7 @@ paths:
         "400":
           description: "Bad request"
 
-  "/products":
+  "/api/products":
     get:
       tags:
         - products
@@ -170,7 +173,7 @@ paths:
           description: "Product updated"
         "400":
           description: "Bad request"
-  "/products/{idProduct}":
+  "/api/products/{idProduct}":
     get:
       tags:
         - products
@@ -183,6 +186,7 @@ paths:
           required: true
           schema:
             type: integer
+            format: int64
       responses:
         "200":
           description: "OK"
@@ -195,7 +199,7 @@ paths:
         "400":
           description: "Bad request"
 
-  "/orders":
+  "/api/orders":
     get:
       tags:
         - orders
@@ -254,7 +258,7 @@ paths:
           description: "Order updated"
         "400":
           description: "Bad request"
-  "/orders/{idOrder}":
+  "/api/orders/{idOrder}":
     get:
       tags:
         - orders
@@ -267,6 +271,7 @@ paths:
           required: true
           schema:
             type: integer
+            format: int64
       responses:
         "200":
           description: "OK"
@@ -290,6 +295,7 @@ paths:
           required: true
           schema:
             type: integer
+            format: int64
       responses:
         "204":
           description: "Order deleted"
@@ -318,6 +324,7 @@ components:
       properties:
         id:
           type: integer
+          format: int64
         firstName:
           type: string
         lastName:
@@ -338,6 +345,7 @@ components:
       properties:
         id:
           type: integer
+          format: int64
         photo:
           type: string
         title:
@@ -359,6 +367,7 @@ components:
       properties:
         id:
           type: integer
+          format: int64
         articles:
           type: array
           items:
