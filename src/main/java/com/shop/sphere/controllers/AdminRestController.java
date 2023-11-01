@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AdminRestController implements AdminsApi {
     @Override
-    public ResponseEntity<AdminDTO> getAdmin(Integer idAdmin) {
+    public ResponseEntity<AdminDTO> getAdmin(Long idAdmin) {
         return AdminsApi.super.getAdmin(idAdmin);
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
 public class ProductRestController implements ProductsApi {
 
     @Override
-    public ResponseEntity<ProductDTO> getProduct(Integer idProduct) {
+    public ResponseEntity<ProductDTO> getProduct(Long idProduct) {
         return ProductsApi.super.getProduct(idProduct);
     }
 
