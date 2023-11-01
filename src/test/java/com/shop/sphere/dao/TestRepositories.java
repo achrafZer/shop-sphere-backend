@@ -1,2 +1,4 @@
-package com.shop.sphere.dao;public class TestRepositories {
+package com.shop.sphere.dao;
+
+public class TestRepositories {
 }
