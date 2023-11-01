@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -42,5 +44,8 @@ public class Buyer {
     @NotBlank(message = "Address is required")
     @Size(max = 150, min = 3, message = "Address must be between 3 and 50 characters")
     private String address;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Order> orders = new ArrayList<>();
 
 }
