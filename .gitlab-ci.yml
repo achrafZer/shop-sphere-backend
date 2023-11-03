@@ -5,6 +5,7 @@ stages:
   - test
 
 variables:
+  MAVEN_CLI_OPTS: "--batch-mode"
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
 
 cache:
@@ -14,8 +15,7 @@ cache:
 build:
   stage: build
   script:
-    - mvnclean compile install -DskipTests -e
-
+    - mvn $MAVEN_CLI_OPTS clean compile install -DskipTests -e
 
 test:
   stage: test
