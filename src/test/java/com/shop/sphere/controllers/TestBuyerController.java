@@ -78,4 +78,15 @@ public class TestBuyerController {
                 .andExpect(jsonPath("$.email").value(testBuyer.getEmail()));
     }
 
+    @Test
+    public void testGetBuyers() throws Exception {
+        when(buyerRepository.findAll()).thenReturn(Arrays.asList(testBuyer));
+
+        mockMvc.perform(get("/api/buyers"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].firstName").value(testBuyer.getFirstName()))
+                .andExpect(jsonPath("$[0].lastName").value(testBuyer.getLastName()))
+                .andExpect(jsonPath("$[0].email").value(testBuyer.getEmail()));
+    }
+
 }
