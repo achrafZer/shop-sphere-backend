@@ -71,4 +71,43 @@ public class TestRepositories {
         assertThat(foundBuyer.getPassword()).isEqualTo("kpotiviPassword");
         assertThat(foundBuyer.getAddress()).isEqualTo("789 Street Kpotivi");
     }
+
+    @Test
+    public void testBuyerDelete() {
+        // Create two buyers
+        Buyer buyer1 = new Buyer();
+        Buyer buyer2 = new Buyer();
+
+        buyer1.setFirstName("Juba");
+        buyer1.setLastName("OUARAB");
+        buyer1.setEmail("juba.ouarab@shopsphere.com");
+        buyer1.setPassword("jubaPassword");
+        buyer1.setAddress("123 Street A");
+
+        buyer2.setFirstName("Kpotivi");
+        buyer2.setLastName("KPOTY");
+        buyer2.setEmail("kpotivi.kpoty@shopsphere.com");
+        buyer2.setPassword("kpotiviPassword");
+        buyer2.setAddress("456 Street B");
+
+        // Persist both buyers
+        entityManager.persist(buyer1);
+        entityManager.persist(buyer2);
+        entityManager.flush();
+
+        // Delete buyer1
+        buyerRepository.delete(buyer1);
+        entityManager.flush();
+
+        // Retrieve buyer1 and buyer2 from the database
+        Buyer foundBuyer1 = entityManager.find(Buyer.class, buyer1.getId());
+        Buyer foundBuyer2 = entityManager.find(Buyer.class, buyer2.getId());
+
+        // Assert that buyer1 is deleted (should be null) and buyer2 is still there
+        assertThat(foundBuyer1).isNull();
+        assertThat(foundBuyer2).isNotNull();
+        assertThat(foundBuyer2.getFirstName()).isEqualTo(buyer2.getFirstName());
+        assertThat(foundBuyer2.getLastName()).isEqualTo(buyer2.getLastName());
+    }
+
 }
