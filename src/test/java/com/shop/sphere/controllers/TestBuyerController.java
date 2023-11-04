@@ -89,4 +89,16 @@ public class TestBuyerController {
                 .andExpect(jsonPath("$[0].email").value(testBuyer.getEmail()));
     }
 
+    @Test
+    public void testUpdateBuyer() throws Exception {
+        when(buyerRepository.findById(any(Long.class))).thenReturn(Optional.of(testBuyer));
+        when(buyerRepository.save(any(Buyer.class))).thenReturn(testBuyer);
+
+        mockMvc.perform(put("/api/buyers")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(testBuyerDTO)))
+                .andExpect(status().isNoContent());
+    }
+
+
 }
