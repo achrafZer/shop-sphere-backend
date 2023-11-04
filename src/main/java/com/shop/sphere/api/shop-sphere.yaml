@@ -351,9 +351,10 @@ components:
         title:
           type: string
         price:
-          type: integer
-        quantity:
           type: number
+          format: double
+        quantity:
+          type: integer
         description:
           type: string
 
