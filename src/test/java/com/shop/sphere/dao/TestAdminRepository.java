@@ -52,5 +52,15 @@ public class TestAdminRepository {
         assertThat(foundAdmin.getEmail()).isEqualTo(newAdmin.getEmail());
     }
 
+
+    @Test
+    public void testAdminRead() {
+        Optional<Admin> foundAdmin = adminRepository.findById(admin.getId());
+        assertThat(foundAdmin).isPresent();
+        assertThat(foundAdmin.get().getEmail()).isEqualTo(admin.getEmail());
+    }
+
+    
+
 }
 
