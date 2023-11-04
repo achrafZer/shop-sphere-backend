@@ -1,5 +1,6 @@
 package com.shop.sphere.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shop.sphere.api.model.BuyerDTO;
 import com.shop.sphere.api.model.IdBuyer;
 import com.shop.sphere.dao.BuyerRepository;
@@ -39,6 +40,9 @@ public class TestBuyerController {
     private Buyer testBuyer;
     private BuyerDTO testBuyerDTO;
 
+    private ObjectMapper objectMapper = new ObjectMapper();
+
+
     @BeforeEach
     public void setUp() {
         testBuyer = new Buyer();
@@ -50,6 +54,17 @@ public class TestBuyerController {
         testBuyer.setAddress("123 Boulevard Achraf");
 
         testBuyerDTO = buyerMapper.buyerToBuyerDto(testBuyer);
+    }
+
+    @Test
+    public void testCreateBuyer() throws Exception {
+        when(buyerRepository.save(any(Buyer.class))).thenReturn(testBuyer);
+
+        mockMvc.perform(post("/api/buyers")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(testBuyerDTO)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.idBuyer").value(testBuyer.getId()));
     }
 
 }
