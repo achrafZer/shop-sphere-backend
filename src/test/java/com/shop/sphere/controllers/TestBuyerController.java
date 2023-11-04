@@ -100,5 +100,15 @@ public class TestBuyerController {
                 .andExpect(status().isNoContent());
     }
 
+    @Test
+    public void testUpdateBuyerNotFound() throws Exception {
+        when(buyerRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+
+        mockMvc.perform(put("/api/buyers")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(testBuyerDTO)))
+                .andExpect(status().isBadRequest());
+    }
+
 
 }
