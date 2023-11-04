@@ -67,4 +67,12 @@ public class TestProductRepository {
         Optional<Product> found = productRepository.findById(-1L);
         assertThat(found).isNotPresent();
     }
+
+    @Test
+    public void whenUpdate_thenReturnUpdatedProduct() {
+        product.setTitle("Updated Product");
+        Product updatedProduct = productRepository.save(product);
+
+        assertThat(updatedProduct.getTitle()).isEqualTo("Updated Product");
+    }
 }
