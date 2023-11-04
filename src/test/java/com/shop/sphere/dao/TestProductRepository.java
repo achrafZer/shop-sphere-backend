@@ -75,4 +75,12 @@ public class TestProductRepository {
 
         assertThat(updatedProduct.getTitle()).isEqualTo("Updated Product");
     }
+
+    @Test
+    public void whenDelete_thenRemoveProduct() {
+        productRepository.deleteById(product.getId());
+
+        Optional<Product> deletedProduct = productRepository.findById(product.getId());
+        assertThat(deletedProduct).isNotPresent();
+    }
 }
