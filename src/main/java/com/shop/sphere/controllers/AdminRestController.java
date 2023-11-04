@@ -22,7 +22,7 @@ public class AdminRestController implements AdminsApi {
     public ResponseEntity<AdminDTO> getAdmin(Long idAdmin) {
         Optional<Admin> admin = adminRepository.findById(idAdmin);
         if(admin.isPresent())
-            return ResponseEntity.ok(adminMapper.adminToProductDto(admin.get()));
+            return ResponseEntity.ok(adminMapper.adminToAdminDto(admin.get()));
         return ResponseEntity.notFound().build();
     }
 

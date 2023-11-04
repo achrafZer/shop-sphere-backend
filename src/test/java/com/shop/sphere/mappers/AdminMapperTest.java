@@ -21,7 +21,7 @@ public class AdminMapperTest {
         admin.setPassword("azer");
 
         AdminMapper adminMapper = Mappers.getMapper(AdminMapper.class);
-        AdminDTO adminDTO = adminMapper.adminToProductDto(admin);
+        AdminDTO adminDTO = adminMapper.adminToAdminDto(admin);
 
         assertEquals(adminDTO.getId(),admin.getId());
         assertEquals(adminDTO.getEmail(),admin.getEmail());
