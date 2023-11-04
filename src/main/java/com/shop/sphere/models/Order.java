@@ -53,7 +53,7 @@ public class Order {
     /**
      * Represents the buyer who placed the order.
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "buyer_id", nullable = false)
     private Buyer client;
 
