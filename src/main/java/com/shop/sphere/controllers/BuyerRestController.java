@@ -12,11 +12,13 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class BuyerRestController implements BuyersApi {
@@ -36,8 +38,10 @@ public class BuyerRestController implements BuyersApi {
     }
 
     @Override
-    public ResponseEntity<BuyerDTO> getBuyer(Long idBuyer) {
-        return BuyersApi.super.getBuyer(idBuyer);
+    public ResponseEntity<BuyerDTO> getBuyer(@PathVariable("idBuyer") Long idBuyer) {
+        Optional<Buyer> buyer = buyerRepository.findById(idBuyer);
+        return buyer.map(value -> new ResponseEntity<>(buyerMapper.buyerToBuyerDto(value), HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
     @Override
