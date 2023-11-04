@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -49,7 +48,7 @@ public class TestProductRepository {
         newProduct.setPrice(15.0);
         newProduct.setQuantity(5);
         Product savedProduct = productRepository.save(newProduct);
-
+        
         assertThat(savedProduct).isNotNull();
         assertThat(savedProduct.getId()).isNotNull();
         assertThat(savedProduct.getTitle()).isEqualTo(newProduct.getTitle());
@@ -72,15 +71,14 @@ public class TestProductRepository {
     public void whenUpdate_thenReturnUpdatedProduct() {
         product.setTitle("Updated Product");
         Product updatedProduct = productRepository.save(product);
-
         assertThat(updatedProduct.getTitle()).isEqualTo("Updated Product");
     }
 
     @Test
     public void whenDelete_thenRemoveProduct() {
         productRepository.deleteById(product.getId());
-
         Optional<Product> deletedProduct = productRepository.findById(product.getId());
         assertThat(deletedProduct).isNotPresent();
     }
+
 }
