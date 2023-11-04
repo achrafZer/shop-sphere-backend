@@ -67,4 +67,15 @@ public class TestBuyerController {
                 .andExpect(jsonPath("$.idBuyer").value(testBuyer.getId()));
     }
 
+    @Test
+    public void testGetBuyer() throws Exception {
+        when(buyerRepository.findById(any(Long.class))).thenReturn(Optional.of(testBuyer));
+
+        mockMvc.perform(get("/api/buyers/{id}", testBuyer.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.firstName").value(testBuyer.getFirstName()))
+                .andExpect(jsonPath("$.lastName").value(testBuyer.getLastName()))
+                .andExpect(jsonPath("$.email").value(testBuyer.getEmail()));
+    }
+
 }
