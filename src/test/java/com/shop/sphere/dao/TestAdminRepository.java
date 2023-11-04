@@ -60,7 +60,21 @@ public class TestAdminRepository {
         assertThat(foundAdmin.get().getEmail()).isEqualTo(admin.getEmail());
     }
 
+    @Test
+    public void testAdminUpdate() {
+        Optional<Admin> foundAdmin = adminRepository.findById(admin.getId());
+        assertThat(foundAdmin).isPresent();
+
+        foundAdmin.get().setEmail("new.email@shopsphere.com");
+        adminRepository.save(foundAdmin.get());
+
+        Optional<Admin> updatedAdmin = adminRepository.findById(admin.getId());
+        assertThat(updatedAdmin).isPresent();
+        assertThat(updatedAdmin.get().getEmail()).isEqualTo("new.email@shopsphere.com");
+    }
+
     
+
 
 }
 
