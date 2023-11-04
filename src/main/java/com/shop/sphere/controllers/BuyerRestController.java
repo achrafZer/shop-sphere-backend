@@ -57,7 +57,13 @@ public class BuyerRestController implements BuyersApi {
         return new ResponseEntity<>(buyerDTOS, HttpStatus.OK);
     }
     @Override
-    public ResponseEntity<Void> updateBuyer(BuyerDTO buyerDTO) {
-        return BuyersApi.super.updateBuyer(buyerDTO);
-    }
-}
+    public ResponseEntity<Void> updateBuyer(@Valid @RequestBody BuyerDTO buyerDTO) {
+        Optional<Buyer> existingBuyer = buyerRepository.findById(buyerDTO.getId());
+        if (existingBuyer.isPresent()) {
+            Buyer updatedBuyer = buyerMapper.buyerDtotoBuyer(buyerDTO);
+            buyerRepository.save(updatedBuyer);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }}
