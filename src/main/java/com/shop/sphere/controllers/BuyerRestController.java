@@ -4,15 +4,12 @@ import com.shop.sphere.api.BuyersApi;
 import com.shop.sphere.api.model.BuyerDTO;
 import com.shop.sphere.api.model.IdBuyer;
 import com.shop.sphere.dao.BuyerRepository;
-import com.shop.sphere.mappers.AdminMapper;
 import com.shop.sphere.mappers.BuyerMapper;
 import com.shop.sphere.models.Buyer;
-import io.swagger.annotations.Authorization;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,7 +28,7 @@ public class BuyerRestController implements BuyersApi {
 
     @Override
     public ResponseEntity<IdBuyer> createBuyer(@Valid @RequestBody BuyerDTO buyerDTO) {
-        Buyer buyer = buyerMapper.buyerDtotoBuyer(buyerDTO);
+        Buyer buyer = buyerMapper.buyerDtoToBuyer(buyerDTO);
         Buyer savedBuyer = buyerRepository.save(buyer);
         IdBuyer idBuyer = new IdBuyer();
         idBuyer.setIdBuyer(savedBuyer.getId());
@@ -60,10 +57,10 @@ public class BuyerRestController implements BuyersApi {
     public ResponseEntity<Void> updateBuyer(@Valid @RequestBody BuyerDTO buyerDTO) {
         Optional<Buyer> existingBuyer = buyerRepository.findById(buyerDTO.getId());
         if (existingBuyer.isPresent()) {
-            Buyer updatedBuyer = buyerMapper.buyerDtotoBuyer(buyerDTO);
+            Buyer updatedBuyer = buyerMapper.buyerDtoToBuyer(buyerDTO);
             buyerRepository.save(updatedBuyer);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }}

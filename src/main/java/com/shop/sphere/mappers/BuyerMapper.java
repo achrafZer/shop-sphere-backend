@@ -9,5 +9,5 @@ public interface BuyerMapper {
 
     BuyerDTO buyerToBuyerDto(Buyer buyer);
 
-    Buyer buyerDtotoBuyer(BuyerDTO buyerDTO);
+    Buyer buyerDtoToBuyer(BuyerDTO buyerDTO);
 }
