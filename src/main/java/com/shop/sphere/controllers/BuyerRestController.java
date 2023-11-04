@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 public class BuyerRestController implements BuyersApi {
@@ -38,7 +39,7 @@ public class BuyerRestController implements BuyersApi {
     }
 
     @Override
-    public ResponseEntity<BuyerDTO> getBuyer(@PathVariable("idBuyer") Long idBuyer) {
+    public ResponseEntity<BuyerDTO> getBuyer(Long idBuyer) {
         Optional<Buyer> buyer = buyerRepository.findById(idBuyer);
         return buyer.map(value -> new ResponseEntity<>(buyerMapper.buyerToBuyerDto(value), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
@@ -46,9 +47,15 @@ public class BuyerRestController implements BuyersApi {
 
     @Override
     public ResponseEntity<List<BuyerDTO>> getBuyers() {
-        return BuyersApi.super.getBuyers();
+        List<Buyer> buyers = (List<Buyer>) buyerRepository.findAll();
+        if (buyers.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        List<BuyerDTO> buyerDTOS = buyers.stream()
+                .map(buyerMapper::buyerToBuyerDto)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(buyerDTOS, HttpStatus.OK);
     }
-
     @Override
     public ResponseEntity<Void> updateBuyer(BuyerDTO buyerDTO) {
         return BuyersApi.super.updateBuyer(buyerDTO);
