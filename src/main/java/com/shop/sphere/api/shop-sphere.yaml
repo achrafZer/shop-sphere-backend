@@ -307,12 +307,12 @@ components:
     BuyerDTO:
       allOf:
         - $ref: "#/components/schemas/AdminDTO"
-      type: object
-      required:
-        - address
-      properties:
-        address:
-          type: string
+        - type: object
+          required:
+            - address
+          properties:
+            address:
+              type: string
 
     AdminDTO:
       type: object
@@ -374,7 +374,8 @@ components:
           items:
             $ref: "#/components/schemas/ProductDTO"
         date:
-          type: object
+          type: string
+          format: date
         isFinalized:
           type: boolean
         client:
@@ -394,8 +395,14 @@ components:
     UserConnectedDTO:
       allOf:
         - $ref: "#/components/schemas/AdminDTO"
-      type: object
-      properties:
-        address:
-          type: string
+        - type: object
+          properties:
+            address:
+              type: string
+
+    RoleEnum:
+      type: string
+      enum:
+        - ADMIN
+        - BUYER
 
