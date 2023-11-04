@@ -73,7 +73,14 @@ public class TestAdminRepository {
         assertThat(updatedAdmin.get().getEmail()).isEqualTo("new.email@shopsphere.com");
     }
 
-    
+    @Test
+    public void testAdminDelete() {
+        adminRepository.delete(admin);
+        entityManager.flush();
+
+        Optional<Admin> deletedAdmin = adminRepository.findById(admin.getId());
+        assertThat(deletedAdmin).isNotPresent();
+    }
 
 
 }
