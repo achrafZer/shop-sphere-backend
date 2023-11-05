@@ -27,7 +27,7 @@ class ProductRestControllerTest {
     @MockBean
     private ProductRepository productRepository;
     private final ProductMapper productMapper = Mappers.getMapper(ProductMapper.class);
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     void getProduct() throws Exception {

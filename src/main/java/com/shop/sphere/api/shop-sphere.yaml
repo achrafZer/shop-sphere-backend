@@ -17,7 +17,7 @@ paths:
             schema:
               $ref: "#/components/schemas/LoginDTO"
       responses:
-        "201":
+        "200":
           description: "Connected"
           content:
             application/json:
@@ -320,7 +320,6 @@ components:
         - firstName
         - lastName
         - email
-        - password
       properties:
         id:
           type: integer
@@ -330,8 +329,6 @@ components:
         lastName:
           type: string
         email:
-          type: string
-        password:
           type: string
 
     ProductDTO:

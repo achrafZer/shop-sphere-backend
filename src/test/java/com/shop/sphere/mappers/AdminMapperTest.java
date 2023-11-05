@@ -27,7 +27,6 @@ public class AdminMapperTest {
         assertEquals(adminDTO.getEmail(),admin.getEmail());
         assertEquals(adminDTO.getFirstName(),admin.getFirstName());
         assertEquals(adminDTO.getLastName(),admin.getLastName());
-        assertEquals(adminDTO.getPassword(),admin.getPassword());
 
     }
 

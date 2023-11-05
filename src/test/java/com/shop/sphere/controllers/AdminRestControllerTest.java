@@ -38,7 +38,6 @@ public class AdminRestControllerTest {
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.firstName").value("A"))
                 .andExpect(jsonPath("$.lastName").value("B"))
-                .andExpect(jsonPath("$.email").value("aa@bb.cc"))
-                .andExpect(jsonPath("$.password").value("dffof9494948Adfdifn"));
+                .andExpect(jsonPath("$.email").value("aa@bb.cc"));
     }
 }
