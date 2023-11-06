@@ -61,9 +61,16 @@ public class OrderRestController implements OrdersApi {
                 .collect(Collectors.toList());
         return new ResponseEntity<>(orderDTOS, HttpStatus.OK);
     }
-    
+
     @Override
-    public ResponseEntity<Void> updateOrder(OrderDTO orderDTO) {
-        return OrdersApi.super.updateOrder(orderDTO);
+    public ResponseEntity<Void> updateOrder(@Valid @RequestBody OrderDTO orderDTO) {
+        Optional<Order> existingOrder = orderRepository.findById(orderDTO.getId());
+        if (existingOrder.isPresent()) {
+            Order updatedOrder = orderMapper.orderDtoToOrder(orderDTO);
+            orderRepository.save(updatedOrder);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }
