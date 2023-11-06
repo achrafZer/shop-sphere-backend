@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 public class OrderRestController implements OrdersApi {
@@ -51,9 +52,16 @@ public class OrderRestController implements OrdersApi {
     }
     @Override
     public ResponseEntity<List<OrderDTO>> getOrders() {
-        return null;
+        List<Order> orders = (List<Order>) orderRepository.findAll();
+        if (orders.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        List<OrderDTO> orderDTOS = orders.stream()
+                .map(orderMapper::orderToOrderDto)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(orderDTOS, HttpStatus.OK);
     }
-
+    
     @Override
     public ResponseEntity<Void> updateOrder(OrderDTO orderDTO) {
         return OrdersApi.super.updateOrder(orderDTO);
