@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class OrderRestController implements OrdersApi {
@@ -44,9 +45,10 @@ public class OrderRestController implements OrdersApi {
     }
     @Override
     public ResponseEntity<OrderDTO> getOrder(Long idOrder) {
-        return OrdersApi.super.getOrder(idOrder);
+        Optional<Order> order = orderRepository.findById(idOrder);
+        return order.map(value -> new ResponseEntity<>(orderMapper.orderToOrderDto(value), HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
-
     @Override
     public ResponseEntity<List<OrderDTO>> getOrders() {
         return null;
