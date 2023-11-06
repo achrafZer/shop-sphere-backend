@@ -35,9 +35,13 @@ public class OrderRestController implements OrdersApi {
     }
     @Override
     public ResponseEntity<Void> deleteOrder(Long idOrder) {
-        return OrdersApi.super.deleteOrder(idOrder);
+        if (orderRepository.existsById(idOrder)) {
+            orderRepository.deleteById(idOrder);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
-
     @Override
     public ResponseEntity<OrderDTO> getOrder(Long idOrder) {
         return OrdersApi.super.getOrder(idOrder);
