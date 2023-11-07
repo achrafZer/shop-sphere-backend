@@ -51,7 +51,7 @@ public class TestOrderController {
         objectMapper.registerModule(new JavaTimeModule());
 
         testOrder = new Order();
-        testOrder.setNumber(1L);
+        testOrder.setId(1L);
         testOrder.setDate(LocalDate.now());
         testOrder.setIsFinalized(true);
 
@@ -82,9 +82,9 @@ public class TestOrderController {
         client.setFirstName("ClientFirstName");
         client.setLastName("ClientLastName");
         client.setEmail("client.email@example.com");
-        client.setPassword("securePassword"); // For test purposes only; be careful with real passwords
+        client.setPassword("securePassword");
         client.setAddress("123 Client Address Street");
-        testOrder.setClient(client); // Assuming Order has a setClient method
+        testOrder.setClient(client);
 
         testOrderDTO = orderMapper.orderToOrderDto(testOrder);
 
@@ -102,7 +102,31 @@ public class TestOrderController {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testOrderDTO)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.idOrder").value(testOrder.getNumber()));
+                .andExpect(jsonPath("$.idOrder").value(testOrder.getId()));
+    }
+
+    @Test
+    void getOrderTest() throws Exception {
+        Mockito.when(orderRepository.findById(testOrder.getId())).thenReturn(Optional.of(testOrder));
+
+        mockMvc.perform(get("/api/orders/{idOrder}", testOrder.getId())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getOrdersTest() throws Exception {
+        mockMvc.perform(get("/api/orders")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void updateOrderTest() throws Exception {
+        mockMvc.perform(put("/api/orders")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(testOrderDTO)))
+                .andExpect(status().isBadRequest());
     }
 
 }
