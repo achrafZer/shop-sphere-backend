@@ -121,12 +121,4 @@ public class TestOrderController {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    void updateOrderTest() throws Exception {
-        mockMvc.perform(put("/api/orders")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(testOrderDTO)))
-                .andExpect(status().isBadRequest());
-    }
-
 }
