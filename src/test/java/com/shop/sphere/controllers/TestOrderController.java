@@ -1,6 +1,7 @@
 package com.shop.sphere.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.shop.sphere.api.model.OrderDTO;
 import com.shop.sphere.dao.OrderRepository;
 import com.shop.sphere.mappers.OrderMapper;
@@ -10,15 +11,23 @@ import com.shop.sphere.models.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -39,6 +48,8 @@ public class TestOrderController {
 
     @BeforeEach
     public void setUp() {
+        objectMapper.registerModule(new JavaTimeModule());
+
         testOrder = new Order();
         testOrder.setNumber(1L);
         testOrder.setDate(LocalDate.now());
@@ -76,5 +87,22 @@ public class TestOrderController {
         testOrder.setClient(client); // Assuming Order has a setClient method
 
         testOrderDTO = orderMapper.orderToOrderDto(testOrder);
+
+        Mockito.when(orderRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(testOrder));
+        Mockito.when(orderRepository.save(Mockito.any(Order.class))).thenReturn(testOrder);
+        Mockito.when(orderRepository.findAll()).thenReturn(Collections.singletonList(testOrder));
+
     }
+
+    @Test
+    void createOrderTest() throws Exception {
+        Mockito.when(orderRepository.save(Mockito.any(Order.class))).thenReturn(testOrder);
+
+        mockMvc.perform(post("/api/orders")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(testOrderDTO)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.idOrder").value(testOrder.getNumber()));
+    }
+
 }
