@@ -32,7 +32,7 @@ public class OrderRestController implements OrdersApi {
         Order order = orderMapper.orderDtoToOrder(orderDTO);
         Order savedOrder = orderRepository.save(order);
         IdOrder idOrder = new IdOrder();
-        idOrder.setIdOrder(savedOrder.getNumber());
+        idOrder.setIdOrder(savedOrder.getId());
         return new ResponseEntity<>(idOrder, HttpStatus.CREATED);
     }
     @Override
