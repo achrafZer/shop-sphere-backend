@@ -25,7 +25,7 @@ public class Order {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long number;
+    private Long id;
 
     /**
      * Represents the list of products associated with the order.

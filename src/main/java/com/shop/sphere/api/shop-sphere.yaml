@@ -238,8 +238,10 @@ paths:
                 title: "idOrder"
                 type: object
                 properties:
-                  idBuyer:
+                  idOrder:
                     type: integer
+                    format: int64
+
         "400":
           description: "Bad request"
     put:
