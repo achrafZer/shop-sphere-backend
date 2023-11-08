@@ -31,7 +31,7 @@ public class Product {
      */
     @Column(nullable = false)
     @NotBlank(message = "Photo URL is required")
-    @Pattern(regexp = "^(https?):\\/\\/[^\\s$.?#].[^\\s]*\\.(jpg|png)$", message = "Invalid photo URL or unsupported extension")
+    @Pattern(regexp = "^(https?):\\/\\/[^\\s$.?#].[^\\s]*\\.(jpg|png)(\\\\?.*)?$", message = "Invalid photo URL or unsupported extension")
     private String photo;
 
     /**
@@ -43,7 +43,7 @@ public class Product {
      */
     @Column(nullable = false)
     @NotBlank(message = "Title is required")
-    @Size(max = 100, min = 3, message = "Title must be between 3 and 100 characters")
+    @Size(max = 250, min = 3, message = "Title must be between 3 and 250 characters")
     @Pattern(regexp = "^[a-zA-Z0-9\\s-]+$", message = "Invalid characters in title")
     private String title;
 
