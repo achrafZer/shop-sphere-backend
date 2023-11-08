@@ -1,5 +1,6 @@
 package com.shop.sphere.service;
 
+import com.shop.sphere.api.model.RoleEnum;
 import com.shop.sphere.api.model.UserConnectedDTO;
 import com.shop.sphere.dao.AdminRepository;
 import com.shop.sphere.dao.BuyerRepository;
@@ -37,12 +38,18 @@ public class LoginService {
     public ResponseEntity<UserConnectedDTO> login(String email, String password){
         if(email.contains(domainName)){
             Admin admin = findAdminByEmailAndPassword(email,password);
-            if(admin != null)
-                return ResponseEntity.ok().body(userConnectedMapper.adminToUserConnectedDto(admin));
+            if(admin != null) {
+                UserConnectedDTO userConnectedDTO = userConnectedMapper.adminToUserConnectedDto(admin);
+                userConnectedDTO.setRole(RoleEnum.ADMIN);
+                return ResponseEntity.ok().body(userConnectedDTO);
+            }
         }
         Buyer buyer = findBuyerByEmailAndPassword(email,password);
-        if(buyer != null)
-            return ResponseEntity.ok().body(userConnectedMapper.buyerToUserConnectedDto(buyer));
+        if(buyer != null) {
+            UserConnectedDTO userConnectedDTO = userConnectedMapper.buyerToUserConnectedDto(buyer);
+            userConnectedDTO.setRole(RoleEnum.BUYER);
+            return ResponseEntity.ok().body(userConnectedDTO);
+        }
         return ResponseEntity.badRequest().build();
     }
 
