@@ -5,10 +5,12 @@ import com.shop.sphere.dao.ProductRepository;
 import com.shop.sphere.models.Admin;
 import com.shop.sphere.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 
 @Service
+@Profile("test")
 public class DataSeeder {
 
     @Autowired
