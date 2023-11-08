@@ -396,6 +396,8 @@ components:
         - $ref: "#/components/schemas/AdminDTO"
         - type: object
           properties:
+            role:
+              $ref: "#/components/schemas/RoleEnum"
             address:
               type: string
 
