@@ -1,8 +1,10 @@
 package com.shop.sphere.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -55,6 +57,7 @@ public class Order {
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "buyer_id", nullable = false)
+    @JsonBackReference
     private Buyer client;
 
 }
