@@ -14,7 +14,6 @@ public class OrderMapperTest {
 
     private OrderMapper orderMapper;
 
-    @Test
     @BeforeEach
     void setup() {
         orderMapper = Mappers.getMapper(OrderMapper.class);
@@ -30,5 +29,17 @@ public class OrderMapperTest {
 
         assertThat(orderDTO).isNotNull();
         assertThat(orderDTO.getDate()).isEqualTo("01/04/2023");
+    }
+
+    @Test
+    void shouldMapOrderDtoToOrder() {
+        String dateString = "01/04/2023";
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setDate(dateString);
+
+        Order order = orderMapper.orderDtoToOrder(orderDTO);
+
+        assertThat(order).isNotNull();
+        assertThat(order.getDate()).isEqualTo(LocalDate.of(2023, 4, 1));
     }
 }
