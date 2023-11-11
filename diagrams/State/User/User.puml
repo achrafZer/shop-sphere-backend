@@ -1,0 +1,11 @@
+@startuml
+
+state Utilisateur {
+  [*] --> Visiteur
+  Visiteur --> Client : Connexion
+  Visiteur --> Admin : Connexion & email d'admin
+  Client --> Visiteur : Déconnexion
+  Admin --> Visiteur : Déconnexion
+}
+
+@enduml
