@@ -10,6 +10,8 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,6 +28,24 @@ public class OrderRestController implements OrdersApi {
 
     private OrderMapper orderMapper = Mappers.getMapper(OrderMapper.class);
 
+    /**
+     * Get a list of orders for a specific buyer.
+     *
+     * @param buyerId the ID of the buyer
+     * @return ResponseEntity containing the list of OrderDTOs
+     */
+    @GetMapping("/api/orders/byBuyer/{buyerId}")
+    public ResponseEntity<List<OrderDTO>> getOrdersByBuyerId(@PathVariable Long buyerId) {
+        List<Order> orders = orderRepository.findOrdersByBuyerId(buyerId);
+        if (orders.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        List<OrderDTO> orderDTOS = orders.stream()
+                .map(orderMapper::orderToOrderDto)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(orderDTOS, HttpStatus.OK);
+    }
 
     @Override
     public ResponseEntity<IdOrder> createOrder(@Valid @RequestBody OrderDTO orderDTO) {
