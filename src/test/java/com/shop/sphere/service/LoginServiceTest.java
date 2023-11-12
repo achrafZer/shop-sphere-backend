@@ -9,6 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -23,6 +25,9 @@ class LoginServiceTest {
 
     @Autowired
     private LoginService loginService;
+
+    @Autowired
+    private BuyerService buyerService;
 
     private Admin admin;
     private Buyer buyer;
@@ -42,7 +47,7 @@ class LoginServiceTest {
         buyer.setEmail("juba.lebuyer@gmail.com");
         buyer.setPassword("BuyerMdp10");
         buyer.setAddress("10 rue des fleurs et des cornichons");
-        buyerRepository.save(buyer);
+        buyerService.saveBuyer(buyer);
     }
 
     @AfterEach

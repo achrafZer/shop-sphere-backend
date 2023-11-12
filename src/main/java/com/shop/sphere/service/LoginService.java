@@ -11,6 +11,7 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,18 +22,25 @@ public class LoginService {
     @Autowired
     private AdminRepository adminRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private BuyerService buyerService;
+
     @Value("${app.domain.name}")
     private String domainName;
 
-    @Autowired
-    private BuyerRepository buyerRepository;
+    protected Buyer findBuyerByEmail(String email) {
+        return buyerService.findBuyerByEmail(email);
+    }
 
     protected Admin findAdminByEmailAndPassword(String email, String password){
         return adminRepository.findAdminByEmailAndPassword(email,password);
     }
 
     protected Buyer findBuyerByEmailAndPassword(String email, String password){
-        return buyerRepository.findBuyerByEmailAndPassword(email,password);
+        return buyerService.findBuyerByEmailAndPassword(email,password);
     }
 
     public ResponseEntity<UserConnectedDTO> login(String email, String password){
@@ -44,8 +52,8 @@ public class LoginService {
                 return ResponseEntity.ok().body(userConnectedDTO);
             }
         }
-        Buyer buyer = findBuyerByEmailAndPassword(email,password);
-        if(buyer != null) {
+        Buyer buyer = findBuyerByEmail(email);
+        if(buyer != null && passwordEncoder.matches(password, buyer.getPassword())) {
             UserConnectedDTO userConnectedDTO = userConnectedMapper.buyerToUserConnectedDto(buyer);
             userConnectedDTO.setRole(RoleEnum.BUYER);
             return ResponseEntity.ok().body(userConnectedDTO);

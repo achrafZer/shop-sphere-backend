@@ -42,7 +42,6 @@ public class Buyer {
 
     @Column(nullable = false)
     @NotBlank(message = "Password is required")
-    @Size(max = 50, min = 8, message = "Password must be between 8 and 50 characters")
     private String password;
 
     @Column(nullable = false)

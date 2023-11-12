@@ -1,5 +1,6 @@
 package com.shop.sphere.controllers;
 
+import com.shop.sphere.service.BuyerService;
 import com.shop.sphere.api.BuyersApi;
 import com.shop.sphere.api.model.BuyerDTO;
 import com.shop.sphere.api.model.IdBuyer;
@@ -22,6 +23,9 @@ import java.util.stream.Collectors;
 public class BuyerRestController implements BuyersApi {
 
     @Autowired
+    private BuyerService buyerService;
+
+    @Autowired
     private BuyerRepository buyerRepository;
 
     private BuyerMapper buyerMapper = Mappers.getMapper(BuyerMapper.class);
@@ -29,7 +33,7 @@ public class BuyerRestController implements BuyersApi {
     @Override
     public ResponseEntity<IdBuyer> createBuyer(@Valid @RequestBody BuyerDTO buyerDTO) {
         Buyer buyer = buyerMapper.buyerDtoToBuyer(buyerDTO);
-        Buyer savedBuyer = buyerRepository.save(buyer);
+        Buyer savedBuyer = buyerService.saveBuyer(buyer);
         IdBuyer idBuyer = new IdBuyer();
         idBuyer.setIdBuyer(savedBuyer.getId());
         return new ResponseEntity<>(idBuyer, HttpStatus.CREATED);
@@ -58,7 +62,7 @@ public class BuyerRestController implements BuyersApi {
         Optional<Buyer> existingBuyer = buyerRepository.findById(buyerDTO.getId());
         if (existingBuyer.isPresent()) {
             Buyer updatedBuyer = buyerMapper.buyerDtoToBuyer(buyerDTO);
-            buyerRepository.save(updatedBuyer);
+            buyerService.saveBuyer(updatedBuyer);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
