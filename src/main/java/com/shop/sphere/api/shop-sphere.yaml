@@ -199,12 +199,20 @@ paths:
         "400":
           description: "Bad request"
 
-  "/api/orders":
+  "/api/orders/byBuyer/{buyerId}":
     get:
       tags:
         - orders
-      summary: "Find all orders"
+      summary: "Find all orders of the buyer"
       operationId: getOrders
+      parameters:
+        - name: buyerId
+          in: path
+          description: "The id of the buyer owning commands"
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         "200":
           description: "OK"
@@ -218,6 +226,8 @@ paths:
           description: "No order found"
         "400":
           description: "Bad request"
+
+  "/api/orders":
     post:
       tags:
         - orders
@@ -242,65 +252,6 @@ paths:
                     type: integer
                     format: int64
 
-        "400":
-          description: "Bad request"
-    put:
-      tags:
-        - orders
-      summary: "Update an order"
-      operationId: updateOrder
-      requestBody:
-        description: "The new information to update on the order"
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/OrderDTO"
-      responses:
-        "204":
-          description: "Order updated"
-        "400":
-          description: "Bad request"
-  "/api/orders/{idOrder}":
-    get:
-      tags:
-        - orders
-      summary: "Find an order by id"
-      operationId: getOrder
-      parameters:
-        - name: idOrder
-          in: path
-          description: "The id of the order to find"
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        "200":
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OrderDTO"
-        "204":
-          description: "No order found"
-        "400":
-          description: "Bad request"
-    delete:
-      tags:
-        - orders
-      summary: "Delete an order"
-      operationId: deleteOrder
-      parameters:
-        - name: idOrder
-          in: path
-          description: "The id of the order to delete"
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        "204":
-          description: "Order deleted"
         "400":
           description: "Bad request"
 

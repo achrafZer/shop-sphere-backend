@@ -28,14 +28,17 @@ public class OrderRestController implements OrdersApi {
 
     private OrderMapper orderMapper = Mappers.getMapper(OrderMapper.class);
 
-    /**
-     * Get a list of orders for a specific buyer.
-     *
-     * @param buyerId the ID of the buyer
-     * @return ResponseEntity containing the list of OrderDTOs
-     */
-    @GetMapping("/api/orders/byBuyer/{buyerId}")
-    public ResponseEntity<List<OrderDTO>> getOrdersByBuyerId(@PathVariable Long buyerId) {
+    @Override
+    public ResponseEntity<IdOrder> createOrder(@Valid @RequestBody OrderDTO orderDTO) {
+        Order order = orderMapper.orderDtoToOrder(orderDTO);
+        Order savedOrder = orderRepository.save(order);
+        IdOrder idOrder = new IdOrder();
+        idOrder.setIdOrder(savedOrder.getId());
+        return new ResponseEntity<>(idOrder, HttpStatus.CREATED);
+    }
+
+    @Override
+    public ResponseEntity<List<OrderDTO>> getOrders(@PathVariable Long buyerId) {
         List<Order> orders = orderRepository.findOrdersByBuyerId(buyerId);
         if (orders.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -45,52 +48,5 @@ public class OrderRestController implements OrdersApi {
                 .map(orderMapper::orderToOrderDto)
                 .collect(Collectors.toList());
         return new ResponseEntity<>(orderDTOS, HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<IdOrder> createOrder(@Valid @RequestBody OrderDTO orderDTO) {
-        Order order = orderMapper.orderDtoToOrder(orderDTO);
-        Order savedOrder = orderRepository.save(order);
-        IdOrder idOrder = new IdOrder();
-        idOrder.setIdOrder(savedOrder.getId());
-        return new ResponseEntity<>(idOrder, HttpStatus.CREATED);
-    }
-    @Override
-    public ResponseEntity<Void> deleteOrder(Long idOrder) {
-        if (orderRepository.existsById(idOrder)) {
-            orderRepository.deleteById(idOrder);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-    @Override
-    public ResponseEntity<OrderDTO> getOrder(Long idOrder) {
-        Optional<Order> order = orderRepository.findById(idOrder);
-        return order.map(value -> new ResponseEntity<>(orderMapper.orderToOrderDto(value), HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
-    }
-    @Override
-    public ResponseEntity<List<OrderDTO>> getOrders() {
-        List<Order> orders = (List<Order>) orderRepository.findAll();
-        if (orders.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        List<OrderDTO> orderDTOS = orders.stream()
-                .map(orderMapper::orderToOrderDto)
-                .collect(Collectors.toList());
-        return new ResponseEntity<>(orderDTOS, HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<Void> updateOrder(@Valid @RequestBody OrderDTO orderDTO) {
-        Optional<Order> existingOrder = orderRepository.findById(orderDTO.getId());
-        if (existingOrder.isPresent()) {
-            Order updatedOrder = orderMapper.orderDtoToOrder(orderDTO);
-            orderRepository.save(updatedOrder);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
     }
 }
