@@ -1,0 +1,76 @@
+@startuml
+
+actor "Client Connecté" as Client
+participant "Catalogue" as Catalogue
+participant "Produit 1" as Article1
+participant "Produit 2" as Article2
+participant "Produit 3" as Article3
+
+activate Client
+
+Client -> Catalogue: Consulte les produits
+activate Catalogue
+Client -> Catalogue: Ajoute une quantité d'un produit au panier
+
+activate Article1
+Catalogue -> Article1: Vérifier la disponibilité
+Article1 --> Catalogue: Quantité demandée indisponible
+Catalogue --> Client: Quantité demandée indisponible
+deactivate Article1
+
+Client -> Catalogue: Ajoute un autre produit au panier
+
+activate Article2
+Catalogue -> Article2: Vérifier la disponibilité
+Article2 --> Catalogue: Quantité disponible
+create  Commande
+Catalogue -> Commande: Créer une commande non finalisée
+activate Commande
+Catalogue --> Client: Porduit ajouté au panier
+deactivate Article2
+
+Client -> Catalogue: Ajoute un autre produit au panier
+
+activate Article3
+Catalogue -> Article3: Vérifier la disponibilité
+Article2 --> Catalogue: Quantité disponible
+Catalogue -> Commande: Mettre à jour la commande non finalisée
+Catalogue --> Client: Porduit ajouté au panier
+deactivate Article3
+
+Client -> Commande: Valider la commande
+Commande --> Client: Demande de payer la commande
+
+Client -> Commande: Saisir les informations de paiement et valider
+control "Banque" as Banque
+activate Banque
+Commande -> Banque: Demande de validation
+Banque -> "Banque": Validation du paiement
+Banque --> Client: Solde insuffisant
+deactivate Banque
+
+Client -> Commande: Diminuer la quantité du produit 3
+activate Article3
+Commande -> Article3: Demande de vérification de disponibilité
+Article3 --> Commande: Quantité disponible
+Commande -> Commande: Modifier la quantité du produit 3
+Commande --> Client: Quantité modifiée
+deactivate Article3
+
+Client -> Commande: Valider la commande
+Commande --> Client: Demande de payer la commande
+
+Client -> Commande: Saisir les informations de paiement et valider
+activate Banque
+Commande -> Banque: Demande de validation
+Banque -> Banque: Validation du paiement
+Banque --> Commande: Paiement validé
+deactivate Banque
+
+Commande -> Commande: Changement de statut en finalisée
+Commande --> Client: Commande validée
+
+Client -> Commande: Consulte l'historique et vérifie que le statut de sa commande est success
+deactivate Commande
+
+@enduml
