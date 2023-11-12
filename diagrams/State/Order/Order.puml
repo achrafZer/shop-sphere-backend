@@ -1,0 +1,11 @@
+@startuml
+
+state Commande {
+  [*] --> Null
+  Null --> NonFinalisée : Ajouter d'articles au panier
+  NonFinalisée --> Null : Vider le panier
+  NonFinalisée --> Finalisée : Payer la commande
+  Finalisée --> [*]
+}
+
+@enduml
